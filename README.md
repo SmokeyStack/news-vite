@@ -1,23 +1,42 @@
-# news-vite
+# Nuxt 3 Minimal Starter
 
-This project utilizes [newsapi](https://newsapi.org/) and [vitejs](https://vitejs.dev/). It displays news articles. As of now, it displays articles from [The Verge](https://www.theverge.com/).
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Project Setup
+## Setup
 
-Navigate to `src/components/News.vue`, replace `import.meta.env.VITE_NEWSAPI` with your api key from [newsapi](https://newsapi.org/).
+Make sure to install the dependencies:
 
-```sh
+```bash
+# yarn
+yarn install
+
+# npm
 npm install
+
+# pnpm
+pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+## Development Server
 
-```sh
+Start the development server on http://localhost:3000
+
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Production
 
-```sh
+Build the application for production:
+
+```bash
 npm run build
 ```
+
+Locally preview production build:
+
+```bash
+npm run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
