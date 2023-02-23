@@ -5,11 +5,11 @@ const { data: articles } = await useFetch("/api/rss", {
 </script>
 
 <template>
-  <ul>
-    <li v-for="(article, index) in articles" :key="article.id">
-      <div>
+  <div v-for="(article, index) in articles" :key="article.id">
+    <v-card>
+      <v-card-title>
         <p>{{ index + 1 }}. {{ article }}</p>
-      </div>
-    </li>
-  </ul>
+      </v-card-title>
+    </v-card>
+  </div>
 </template>
