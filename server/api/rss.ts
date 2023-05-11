@@ -1,20 +1,21 @@
-import Parser from 'rss-parser'
+import Parser from 'rss-parser';
 
 const parser = new Parser();
 
-let articles: string[] = [];
+let articles: object[] = [];
 
 const getFeed = async (url: string) => {
     const feed = await parser.parseURL(url);
 
-    feed.items.forEach(item => {
-        articles.push(item.title!)
+    feed.items.forEach((item) => {
+        articles.push({ title: item.title!, content: item.content });
+        // console.log(item.content);
     });
 };
 
 export default defineEventHandler(async (event) => {
-    const query = getQuery(event)
+    const query = getQuery(event);
 
     await getFeed(query.param1!.toString());
-    return articles
-})
+    return articles;
+});
