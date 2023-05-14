@@ -1,6 +1,14 @@
 <template>
-  <div>
-    <h1>Hello</h1>
-    <Feed />
-  </div>
+    <div>
+        <v-container fluid>
+            <v-row no-gutters dense>
+                <v-col>
+                    <Feed />
+                </v-col>
+                <v-col>
+                    <Dummy />
+                </v-col>
+            </v-row>
+        </v-container>
+    </div>
 </template>

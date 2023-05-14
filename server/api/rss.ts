@@ -9,7 +9,6 @@ const getFeed = async (url: string) => {
 
     feed.items.forEach((item) => {
         articles.push({ title: item.title!, content: item.content });
-        // console.log(item.content);
     });
 };
 
