@@ -1,7 +1,9 @@
 <script>
     export default {
         data: () => ({
-            tab: 'option-1'
+            tab: 'option-1',
+            feed: '1',
+            length: 10
         })
     };
 </script>
@@ -16,9 +18,18 @@
 </script>
 
 <template>
+    {{ length }}
+    <v-btn
+        :loading="loading"
+        class="flex-grow-1"
+        height="48"
+        variant="tonal"
+        @click="length += 10">
+        Take Checkup
+    </v-btn>
     <v-container fluid>
         <v-row>
-            <v-col cols="3">
+            <v-col cols="2">
                 <v-tabs v-model="tab" direction="vertical">
                     <v-tab value="option-1">
                         <v-icon start> mdi-account </v-icon>
@@ -34,20 +45,35 @@
                     </v-tab>
                 </v-tabs>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="10">
                 <v-window v-model="tab">
                     <v-window-item value="option-1" width="50vh">
-                        <v-expansion-panels v-for="(article, index) in posts">
-                            <v-expansion-panel v-if="index < 10">
-                                <v-expansion-panel-title
-                                    >{{ index + 1 }}.
-                                    {{ article.title }}</v-expansion-panel-title
-                                >
-                                <v-expansion-panel-text>{{
-                                    article.content
-                                }}</v-expansion-panel-text>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
+                        <v-row>
+                            <v-col>
+                                <v-tabs v-model="feed" direction="vertical">
+                                    <v-tab
+                                        v-for="x in length"
+                                        :key="x"
+                                        :value="x">
+                                        {{ posts[x].title }} - {{ x }}
+                                    </v-tab>
+                                </v-tabs>
+                            </v-col>
+                            <v-col>
+                                <v-window v-model="feed">
+                                    <v-window-item
+                                        v-for="x in length"
+                                        :key="x"
+                                        :value="x">
+                                        <v-card flat>
+                                            <v-card-text>
+                                                {{ posts[x].content }} - {{ x }}
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-window-item>
+                                </v-window>
+                            </v-col>
+                        </v-row>
                     </v-window-item>
                     <v-window-item value="option-2">
                         <v-card flat>
