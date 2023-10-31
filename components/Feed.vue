@@ -8,17 +8,10 @@
     };
 </script>
 <script setup>
-    const { pending, data: posts } = await useLazyFetch('/api/rss', {
-        query: { param1: "https://thespawnchunks.com/feed/podcast/'" }
-    });
-    watch(posts, (newPosts) => {
-        // Because posts might start out null, you won't have access
-        // to its contents immediately, but you can watch it.
-    });
+    const { pending, data: posts } = await useFetch('/api/rss');
 </script>
 
 <template>
-    {{ length }}
     <v-btn
         :loading="loading"
         class="flex-grow-1"
@@ -31,17 +24,9 @@
         <v-row>
             <v-col cols="2">
                 <v-tabs v-model="tab" direction="vertical">
-                    <v-tab value="option-1">
+                    <v-tab v-for="x in 3" :key="x" :value="'option-' + x">
                         <v-icon start> mdi-account </v-icon>
-                        Option 1
-                    </v-tab>
-                    <v-tab value="option-2">
-                        <v-icon start> mdi-lock </v-icon>
-                        Option 2
-                    </v-tab>
-                    <v-tab value="option-3">
-                        <v-icon start> mdi-access-point </v-icon>
-                        Option 3
+                        Option {{ x }}
                     </v-tab>
                 </v-tabs>
             </v-col>
@@ -67,7 +52,10 @@
                                         :value="x">
                                         <v-card flat>
                                             <v-card-text>
-                                                {{ posts[x].content }} - {{ x }}
+                                                {{ posts[x].content }} -
+                                                <a v-bind:href="posts[x].url">
+                                                    {{ posts[x].url }}</a
+                                                >
                                             </v-card-text>
                                         </v-card>
                                     </v-window-item>
