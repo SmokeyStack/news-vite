@@ -5,29 +5,28 @@ const parser = new Parser();
 
 let articles: object[] = [];
 
-export default defineEventHandler(async () => {
-    json.forEach(async (item) => {
-        const feed = await parser.parseURL(item.url);
+const getFeed = async () => {
+    for (let a = 0; a < json.length; a++) {
+        const feed = await parser.parseURL(json[a].url);
 
         let obj = {
-            title: item.title,
-            content: {
-                url: item.url
-            }
+            title: json[a].title,
+            content: []
         };
 
-        console.log(obj);
-
         feed.items.forEach((item) => {
-            articles.push({
+            obj.content.push({
                 title: item.title!,
                 content: item.content,
                 url: item.link
             });
         });
-    });
+        articles.push(obj);
+    }
+};
 
-    console.log(articles);
-
+export default defineEventHandler(async (event) => {
+    articles = [];
+    await getFeed();
     return articles;
 });
