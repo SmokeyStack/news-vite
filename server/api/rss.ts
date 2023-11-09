@@ -3,13 +3,18 @@ import json from './feed.json';
 
 const parser = new Parser();
 
-let articles: object[] = [];
+let articles: Feed[] = [];
+
+interface Feed {
+    title: string;
+    content: object[];
+}
 
 const getFeed = async () => {
     for (let a = 0; a < json.length; a++) {
         const feed = await parser.parseURL(json[a].url);
 
-        let obj = {
+        let obj: Feed = {
             title: json[a].title,
             content: []
         };
