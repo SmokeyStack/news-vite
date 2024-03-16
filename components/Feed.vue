@@ -39,8 +39,8 @@
 </script>
 
 <template>
-    <v-container fluid>
-        <v-row>
+    <v-container fluid
+        ><v-row>
             <v-col cols="2">
                 <v-form v-on:submit="sub" action="#" method="post">
                     <v-text-field
@@ -74,20 +74,19 @@
                         :value="'option-' + x">
                         <v-row>
                             <v-col>
-                                <v-tabs v-model="feed" direction="vertical">
-                                    <template
-                                        v-for="y in posts[x - 1].content
-                                            .length">
-                                        <v-tab v-if="y - 1 < length" :value="y">
-                                            {{
-                                                posts[x - 1].content[y - 1]
-                                                    .title
-                                            }}
-                                            -
-                                            {{ y }}
-                                        </v-tab>
+                                <v-virtual-scroll
+                                    :items="posts[x - 1].content"
+                                    max-height="90vh">
+                                    <template v-slot:default="{ item }">
+                                        <v-tabs
+                                            v-model="feed"
+                                            direction="vertical">
+                                            <v-tab :value="item.title">
+                                                {{ item.title }}
+                                            </v-tab>
+                                        </v-tabs>
                                     </template>
-                                </v-tabs>
+                                </v-virtual-scroll>
                             </v-col>
                             <v-col>
                                 <v-window v-model="feed">
@@ -95,8 +94,10 @@
                                         v-for="y in posts[x - 1].content
                                             .length">
                                         <v-window-item
-                                            v-if="y - 1 < length"
-                                            :value="y">
+                                            :value="
+                                                posts[x - 1].content[y - 1]
+                                                    .title
+                                            ">
                                             <v-card flat>
                                                 <v-card-text>
                                                     {{

@@ -35,10 +35,10 @@ const getFeed = async (json: any) => {
     }
 
     for (let a = 0; a < json.length; a++) {
-        const feed = await parser.parseURL(json[a].url);
+        const feed = await parser.parseURL(JSON.parse(json[a]).url);
 
         let obj: Feed = {
-            title: json[a].title,
+            title: JSON.parse(json[a]).title,
             content: []
         };
 
