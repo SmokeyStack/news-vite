@@ -1,5 +1,5 @@
 import Parser from 'rss-parser';
-import json from './feed.json';
+// import json from './feed.json';
 
 const parser = new Parser();
 
@@ -10,7 +10,30 @@ interface Feed {
     content: object[];
 }
 
-const getFeed = async () => {
+const getFeed = async (json: any) => {
+    if (json === undefined) return;
+
+    if (typeof json === 'string') {
+        json = JSON.parse(json);
+        const feed = await parser.parseURL(json.url);
+
+        let obj: Feed = {
+            title: json.title,
+            content: []
+        };
+
+        feed.items.forEach((item) => {
+            obj.content.push({
+                title: item.title!,
+                content: item.content,
+                url: item.link
+            });
+        });
+        articles.push(obj);
+
+        return;
+    }
+
     for (let a = 0; a < json.length; a++) {
         const feed = await parser.parseURL(json[a].url);
 
@@ -31,7 +54,8 @@ const getFeed = async () => {
 };
 
 export default defineEventHandler(async (event) => {
+    const query = getQuery(event);
     articles = [];
-    await getFeed();
+    await getFeed(query.data);
     return articles;
 });

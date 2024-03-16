@@ -10,24 +10,32 @@
 
         methods: {
             sub: function (event) {
-                console.log('Yay');
                 if (this.feedName == '' || this.feedUrl == '') {
-                    console.log('User and Password is required.');
                     event.preventDefault();
                 } else {
-                    useFetch('/api/saveconfig', {
-                        query: {
-                            name: this.feedName,
-                            url: this.feedUrl
-                        }
-                    });
+                    const cookie = useCookie('counter');
+
+                    if (cookie.value == undefined) {
+                        cookie.value = [];
+                    }
+
+                    cookie.value = test(
+                        this.feedName,
+                        this.feedUrl,
+                        cookie.value
+                    );
                 }
             }
         }
     };
 </script>
 <script setup>
-    const { data: posts } = await useFetch('/api/rss');
+    const data = useCookie('counter');
+    const { data: posts } = await useFetch('/api/rss', {
+        query: {
+            data: data.value || []
+        }
+    });
 </script>
 
 <template>
