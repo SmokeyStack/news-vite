@@ -3,7 +3,6 @@
         data: () => ({
             tab: 'option-1',
             feed: '1',
-            length: 10,
             feedName: '',
             feedUrl: ''
         }),
@@ -24,6 +23,21 @@
                         this.feedUrl,
                         cookie.value
                     );
+
+                    window.location.reload();
+                }
+            },
+            remove: function (event) {
+                if (this.feedName == '') {
+                    event.preventDefault();
+                } else {
+                    const cookie = useCookie('counter');
+
+                    for (let a = 0; a < cookie.value.length; a++)
+                        if (cookie.value[a].title == this.feedName)
+                            cookie.value.splice(a, 1);
+
+                    window.location.reload();
                 }
             }
         }
@@ -42,14 +56,15 @@
     <v-container fluid
         ><v-row>
             <v-col cols="2">
-                <v-form v-on:submit="sub" action="#" method="post">
+                <v-form>
                     <v-text-field
                         v-model="feedName"
                         label="Feed Name"></v-text-field>
                     <v-text-field
                         v-model="feedUrl"
                         label="Feed Url"></v-text-field>
-                    <v-btn type="submit">Let's go</v-btn>
+                    <v-btn @click="sub">Add Feed</v-btn>
+                    <v-btn @click="remove">Remove Feed</v-btn>
                 </v-form>
                 <v-tabs v-model="tab" direction="vertical">
                     <v-tab v-for="x in posts.length" :value="'option-' + x">
@@ -59,15 +74,6 @@
                 </v-tabs>
             </v-col>
             <v-col cols="10">
-                <v-btn
-                    :loading="loading"
-                    class="flex-grow-1"
-                    height="32"
-                    variant="tonal"
-                    @click="length += 10"
-                    align>
-                    Expand list
-                </v-btn>
                 <v-window v-model="tab"
                     ><v-window-item
                         v-for="x in posts.length"
