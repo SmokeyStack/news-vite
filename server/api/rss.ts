@@ -15,21 +15,24 @@ const getFeed = async (json: any) => {
 
     if (typeof json === 'string') {
         json = JSON.parse(json);
-        const feed = await parser.parseURL(json.url);
+        await parser
+            .parseURL(json.url)
+            .then((feed) => {
+                let obj: Feed = {
+                    title: json.title,
+                    content: []
+                };
 
-        let obj: Feed = {
-            title: json.title,
-            content: []
-        };
-
-        feed.items.forEach((item) => {
-            obj.content.push({
-                title: item.title!,
-                content: item.content,
-                url: item.link
-            });
-        });
-        articles.push(obj);
+                feed.items.forEach((item) => {
+                    obj.content.push({
+                        title: item.title!,
+                        content: item.content,
+                        url: item.link
+                    });
+                });
+                articles.push(obj);
+            })
+            .catch((err) => console.log(err));
 
         return;
     }
