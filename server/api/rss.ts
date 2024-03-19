@@ -35,21 +35,24 @@ const getFeed = async (json: any) => {
     }
 
     for (let a = 0; a < json.length; a++) {
-        const feed = await parser.parseURL(JSON.parse(json[a]).url);
+        await parser
+            .parseURL(JSON.parse(json[a]).url)
+            .then((feed) => {
+                let obj: Feed = {
+                    title: JSON.parse(json[a]).title,
+                    content: []
+                };
 
-        let obj: Feed = {
-            title: JSON.parse(json[a]).title,
-            content: []
-        };
-
-        feed.items.forEach((item) => {
-            obj.content.push({
-                title: item.title!,
-                content: item.content,
-                url: item.link
-            });
-        });
-        articles.push(obj);
+                feed.items.forEach((item) => {
+                    obj.content.push({
+                        title: item.title!,
+                        content: item.content,
+                        url: item.link
+                    });
+                });
+                articles.push(obj);
+            })
+            .catch((err) => console.log(err));
     }
 };
 
